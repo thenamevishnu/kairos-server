@@ -24,6 +24,7 @@ const createNewAccount = async (req, res) => {
         }
         return res.status(400).send({ message: "Something went wrong!"})
     } catch (err) {
+        console.log(err.message);
         return res.status(500).send({ message: "Internal server error"})
     }
 }
@@ -41,7 +42,7 @@ const userLogin = async (req, res) => {
             const token = createToken({ sub: userinfo._doc }, process.env.JWT_KEY, { expiresIn: "7d" })
             return res.status(201).send({message: "success", result: token})
         }
-        return res.status(400).send({ message: "Something went wrong!"})
+        return res.status(400).send({ message: "Invalid Login!"})
     } catch (err) {
         return res.status(500).send({ message: "Internal server error"})
     }
