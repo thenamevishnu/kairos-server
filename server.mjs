@@ -3,6 +3,7 @@ import userRoute from "./Routes/user.controller.mjs"
 import mentorRoute from "./Routes/mentor.route.mjs"
 import cors from "cors"
 import "./Config/db.mjs"
+import "./Utils/cron.mjs"
 
 const app = express()
 

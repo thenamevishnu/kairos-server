@@ -32,7 +32,7 @@ const bookMentor = async (req, res) => {
             studentMail: body.studentMail
         })
         if (response?._id) {
-            return await res.status(201).send({ status: "OK", message: `Booked on ${body.date} at ${body.start} - ${body.end}`})
+            return await res.status(201).send({ status: "OK", message: `Booked on ${new Date(body.date * 1000).toLocaleDateString("en-IN")} at ${body.start} - ${body.end}`})
         }
         return res.status(500).send({message: "Something went wrong!"})
     } catch (err) {
@@ -54,6 +54,11 @@ const getBookings = async (req, res) => {
                 foreignField: "_id",
                 as: "mentorInfo"
             }
+        }, {
+            $sort: {
+                date: 1,
+                "time.from": 1
+           } 
         }])
         return res.status(200).send({message: "success", result: bookings || []})
     } catch (err) {
