@@ -21,7 +21,6 @@ export const sendMail = async (to, subject, text) => {
         mailOptions.subject = subject
         mailOptions.html = `<b>${text}</b>` 
         transporter.sendMail(mailOptions, function (err, res) {
-            
             if(err) reject(false)  
             resolve(true)
         })

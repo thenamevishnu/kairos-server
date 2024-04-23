@@ -10,6 +10,10 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
+    domain: {
+        type: String,
+        default: "MERN STACK"
+    },
     username: {
         type: String,
         required: true,
@@ -17,7 +21,7 @@ const userSchema = new Schema({
     },
     dp: {
         type: String,
-        default: "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper.png"
+        default: process.env.DEFAULT_AVATAR
     },
     password: {
         type: String,

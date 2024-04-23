@@ -5,25 +5,21 @@ const bookingSchema = new Schema({
         type: Types.ObjectId,
         required: true
     },
+    roomId: {
+        type: String,
+        required: true
+    },
+    session: {
+        type: Types.ObjectId,
+        required: true
+    },
     student: {
-        type: Types.ObjectId  
+        type: Types.ObjectId,
+        required: true
     },
-    mentorMail: {
-        type: String
-    },
-    studentMail: {
-        type: String
-    },
-    date: {
-        type: Number
-    },
-    time: {
-        from: {
-            type: String
-        },
-        to: {
-            type: String
-        }
+    notified: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
