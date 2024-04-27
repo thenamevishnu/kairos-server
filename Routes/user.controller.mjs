@@ -6,4 +6,10 @@ const Route = Router()
 Route.post("/create", userController.createNewAccount)
 Route.get("/login", userController.userLogin)
 
+Route.patch("/profile/update", userController.profileUpdate)
+Route.patch("/profile/password/update", userController.changePassword)
+Route.delete("/profile/delete/:user_id", userController.deleteAccount)
+
+Route.patch("/password/reset", userController.resetPassword)
+
 export default Route

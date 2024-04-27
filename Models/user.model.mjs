@@ -30,6 +30,15 @@ const userSchema = new Schema({
     type: {
         type: String,
         default: "student"
+    },
+    deleted: {
+        status: {
+            type: Boolean,
+            default: false
+        },
+        reason: {
+            type: String
+        }
     }
 }, {
     timestamps: true
