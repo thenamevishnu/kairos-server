@@ -11,5 +11,6 @@ Route.patch("/profile/password/update", userController.changePassword)
 Route.delete("/profile/delete/:user_id", userController.deleteAccount)
 
 Route.patch("/password/reset", userController.resetPassword)
+Route.patch("/password/reset/verify", userController.resetPasswordVerify)
 
 export default Route

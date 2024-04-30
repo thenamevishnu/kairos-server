@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import Cryptr from "cryptr"
 import { sendMail } from "../Utils/Mailer.mjs"
+import { passwordGenerator } from "../Utils/Helper.mjs"
 
 const { sign: createToken } = jwt
 
@@ -124,11 +125,33 @@ const resetPassword = async (req, res) => {
             return res.status(404).send({message: "Email is not registered with us"})
         }
         const enMail = cryptr.encrypt(email)
-        const resData = await sendMail(email, "Password Reset Verification", `Click on the link to verify: ${process.env.SERVER}/password/reset/verify?hash=${enMail}`)
+        const resData = await sendMail(email, "Password Reset Verification", `Click on the link to verify: ${process.env.CLIENT}/password/reset/verify?hash=${enMail}`)
         if (resData) {
             return res.status(200).send({ message: "reset verification mail sent", status: "OK" })
         }
         return res.status(400).send({ message: "reset verification failed" })
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send({ message: "Internal server error"})
+    }
+}
+
+const resetPasswordVerify = async (req, res) => {
+    try {
+        const {hash} = req.body
+        const deMail = cryptr.decrypt(hash)
+        const user = await userDB.findOne({ email: deMail })
+        if (!user) {
+            return res.status(404).send({message: "user not found"})
+        }
+        const newPassword1 = passwordGenerator()
+        const newPassword = await bcrypt.hash(newPassword1, 10)
+        const response = await userDB.updateOne({ email: deMail }, { $set: { password: newPassword } })
+        if (response.matchedCount == 1 && response.modifiedCount == 1) {
+            await sendMail(deMail, "Password has been changed", `Your new password for ${deMail} : ${newPassword1}`)
+            return res.status(200).send({status: "OK"})
+        }
+        return res.status(400).send({ message: "BAD REQUEST" })
     } catch (err) {
         console.log(err.message);
         return res.status(500).send({ message: "Internal server error"})
@@ -141,5 +164,6 @@ export default {
     profileUpdate,
     changePassword,
     deleteAccount,
-    resetPassword
+    resetPassword,
+    resetPasswordVerify
 }
